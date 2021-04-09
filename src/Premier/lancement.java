@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Iterator;
 import java.util.Scanner;
 
 import Assurance.AssuHabitation;
@@ -14,26 +15,28 @@ import Assurance.ContratAssurance;
 import Automobile.Camion;
 import Automobile.Moto;
 import Automobile.Voiture;
-import Automobile.VÈhicule;
+import Automobile.V√©hicule;
 import Banque.CompteEpargne;
 import Banque.Pret;
 import Douleur.Aspirine;
 import Douleur.IAntalgique;
-import Douleur.IbuprofËne;
+import Douleur.Ibuprof√®ne;
 import Douleur.Paracetamol;
 import POE.Ordinateur;
 import POE.Stagiaires;
+import Utilitaires.Saisie;
+import Utilitaires.Saisie.TypeSaisie;
 import Artisanat.Devis;
 import Artisanat.Devis.TypeConseil;
 import Artisanat.Prestation;
 
 public class lancement {
 
-	//ProcÈdure principale lancÈe ‡ l'exÈcution de cette classe
+	//Proc√©dure principale lanc√©e √† l'ex√©cution de cette classe
 	
 	public static void main(String[] args) {
 		
-	//Utilisation d'une classe faÓte maison
+	//Utilisation d'une classe fa√Æte maison
 		
 		//DemoCompteEpargne();
 		
@@ -83,7 +86,11 @@ public class lancement {
 		
 		//TesterDevis();
 		
-		TesterDevisEtPrestations();
+		//TesterDevisEtPrestations();
+		
+		//TesterSaisie();
+		
+		SaisieDesDevis();
 		
 		
 		
@@ -95,6 +102,70 @@ public class lancement {
 	
 	
 		
+	private static void SaisieDesDevis() {
+		
+		//Obtenir la date du devis
+				LocalDate dateDevis =(LocalDate) Saisie.Saisir(TypeSaisie.Date,"Saisir la date du devis");
+				
+				//Initialiser un devis
+				Devis devis = new Devis(dateDevis);
+				
+				String reponse;
+				
+				do {
+					
+					//Initialiser une Prestation
+				LocalDate datePresta = (LocalDate)Saisie.Saisir(TypeSaisie.Date,"Saisir une date de prestation");
+				int intQte = (int)Saisie.Saisir(TypeSaisie.Quantite, "Saisir le nombre de produits");
+				double dblPrix = (double)Saisie.Saisir(TypeSaisie.Prix,"Quel est le prix");
+				String strDescription = (String)Saisie.Saisir(TypeSaisie.Chaine,"description?");
+				
+				
+				Prestation presta = new Prestation(datePresta, intQte, dblPrix, strDescription);
+				
+				devis.AjouterMarchandises(presta);
+					
+				reponse = (String)Saisie.Saisir(TypeSaisie.Chaine, "Ajouter une presta (O/N)");
+					
+				} while (reponse.equals("O"));
+				
+				
+				
+				//Affichage du resume
+				
+				for (Prestation p : devis.getDetails()) {
+					
+					out.println("Achat de : " + p.strDescription + " pour un montant de " + (p.dblPU*p.intQuantite));
+					
+					
+				}
+		
+	}
+
+
+
+
+/*
+
+	private static void TesterSaisie() {
+		
+		//String chaine = (String) Saisie.Saisir(TypeSaisie.Chaine);
+		
+		Double prix = (Double)Saisie.Saisir(TypeSaisie.Prix);
+		
+		//Integer qte = (Integer)Saisie.Saisir(TypeSaisie.Quantite);
+		//LocalDate date = (LocalDate)Saisie.Saisir(TypeSaisie.Date);
+		
+		out.println(prix);
+		
+		
+	}
+
+
+*/
+
+
+
 	private static void TesterDevisEtPrestations() {
 		
 		Devis devis = new Devis(LocalDate.of(2021, 4, 5));
@@ -107,7 +178,7 @@ public class lancement {
 		devis.AjouterMarchandises(p2);
 		devis.AjouterConseil(p3);
 		
-		out.println("dÈtails du devis : ");
+		out.println("d√©tails du devis : ");
 		
 		for (Prestation  p : devis.getDetails()) {
 			out.println(p.strDescription);
@@ -184,9 +255,9 @@ public class lancement {
 		IAntalgique antalgiques[] = {
 				
 				new Aspirine(),
-				new IbuprofËne(),
+				new Ibuprof√®ne(),
 				new Aspirine(),
-				new IbuprofËne(),
+				new Ibuprof√®ne(),
 				new Paracetamol()
 		};
 		
@@ -211,7 +282,7 @@ public class lancement {
 
 	private static void DemoHeritage() {
 		
-		VÈhicule veh = new VÈhicule();
+		V√©hicule veh = new V√©hicule();
 		Moto motoBM = new Moto();
 		Camion truck = new Camion();
 		Voiture voitureTitine = new Voiture();
@@ -228,14 +299,14 @@ public class lancement {
 		out.println("Voiture : " + voitureTitine.getVitesse());
 		
 		
-		VÈhicule vehicules[] = {veh, motoBM, truck, voitureTitine};
+		V√©hicule vehicules[] = {veh, motoBM, truck, voitureTitine};
 		
-		for (VÈhicule vÈhicule : vehicules) {
+		for (V√©hicule v√©hicule : vehicules) {
 			
-			vÈhicule.Accelerer(55);
+			v√©hicule.Accelerer(55);
 			
 			
-			out.println(vÈhicule.getVitesse());
+			out.println(v√©hicule.getVitesse());
 			
 		}
 		
@@ -256,7 +327,7 @@ public class lancement {
 				
 		};
 		
-		//Faire le cumul des comptes d'Èpargne dont le solde est positif
+		//Faire le cumul des comptes d'√©pargne dont le solde est positif
 		
 		Double dblCumul = 0d;
 		
@@ -277,7 +348,7 @@ public class lancement {
 		
 		//Initialisation d'un tableau
 		
-		String strPrenoms [] = {" Jonathan ", " Norhane ", " Anass ", " AlaÈ ", " Martin ", " Vero "};
+		String strPrenoms [] = {" Jonathan ", " Norhane ", " Anass ", " Ala√© ", " Martin ", " Vero "};
 		
 		//Manipulation d'un tableau
 		
@@ -306,7 +377,7 @@ public class lancement {
 				
 				
 			}else if (intReponse==intNbSecret) {
-				strMessage =" Bravo c'est gagnÈ " + intCompteur + "coups";
+				strMessage =" Bravo c'est gagn√© " + intCompteur + "coups";
 				
 			}else {
 				strMessage ="Abandon....";
@@ -348,7 +419,7 @@ public class lancement {
 				
 			} catch (Exception e) {
 			
-				message = "Merci de contrÙler votre saisie, un entier entre 1 et 100";
+				message = "Merci de contr√¥ler votre saisie, un entier entre 1 et 100";
 			}
 			
 			
@@ -371,7 +442,7 @@ public class lancement {
 		
 		out.println("Saisir un Nom d'au moins 4 lettres");
 		
-		//RÈcupÈrer la saisie
+		//R√©cup√©rer la saisie
 		 strNom = scanSaisie.nextLine();
 		
 		}while(strNom.length()<4);
@@ -387,29 +458,29 @@ public class lancement {
 			//Initiation pour le scanner
 			Scanner scanSaisie = new Scanner(System.in);
 			
-			//Une invite pour l'arrivÈe
+			//Une invite pour l'arriv√©e
 			
-			out.println("Saisir la date d'arrivÈe ");
+			out.println("Saisir la date d'arriv√©e ");
 			
-			//RÈcupÈrer la saisie du type du vÈhicule
+			//R√©cup√©rer la saisie du type du v√©hicule
 			String strDebut = scanSaisie.nextLine();
 			
-			//Une invite pour le dÈbut
+			//Une invite pour le d√©but
 			
-			out.println("Saisir la date de dÈpart");
+			out.println("Saisir la date de d√©part");
 					
-			//RÈcupÈrer la saisie du type du vÈhicule
+			//R√©cup√©rer la saisie du type du v√©hicule
 			String strFin = scanSaisie.nextLine();
 			
 			
 			LocalDate dateDebut = LocalDate.parse(strDebut);
 			LocalDate dateFin = LocalDate.parse(strFin);
 			
-			//DÈtermination de la durÈe 
+			//D√©termination de la dur√©e 
 			
 			Integer duree = (Period.between(dateDebut, dateFin)).getDays();
 			
-			//Initialisation du compteur‡ 0
+			//Initialisation du compteur√† 0
 			Integer intCompteur = 0;
 			
 			//Inialisation du cumul
@@ -433,7 +504,7 @@ public class lancement {
 			}
 			
 			//Afficher le cumul
-			out.println(" Le cumul s'ÈlËve ‡ " + intCumul);
+			out.println(" Le cumul s'√©l√®ve √† " + intCumul);
 					
 			
 		}
@@ -445,29 +516,29 @@ public class lancement {
 		//Initiation pour le scanner
 		Scanner scanSaisie = new Scanner(System.in);
 		
-		//Une invite pour l'arrivÈe
+		//Une invite pour l'arriv√©e
 		
-		out.println("Saisir la date d'arrivÈe ");
+		out.println("Saisir la date d'arriv√©e ");
 		
-		//RÈcupÈrer la saisie du type du vÈhicule
+		//R√©cup√©rer la saisie du type du v√©hicule
 		String strDebut = scanSaisie.nextLine();
 		
-		//Une invite pour le dÈbut
+		//Une invite pour le d√©but
 		
-		out.println("Saisir la date de dÈpart");
+		out.println("Saisir la date de d√©part");
 				
-		//RÈcupÈrer la saisie du type du vÈhicule
+		//R√©cup√©rer la saisie du type du v√©hicule
 		String strFin = scanSaisie.nextLine();
 		
 		
 		LocalDate dateDebut = LocalDate.parse(strDebut);
 		LocalDate dateFin = LocalDate.parse(strFin);
 		
-		//DÈtermination de la durÈe 
+		//D√©termination de la dur√©e 
 		
 		Integer duree = (Period.between(dateDebut, dateFin)).getDays();
 		
-		//Initialisation du compteur‡ 0
+		//Initialisation du compteur√† 0
 		Integer intCompteur = 0;
 		
 		//Inialisation du cumul
@@ -489,7 +560,7 @@ public class lancement {
 		}
 		
 		//Afficher le cumul
-		out.println(" Le cumul s'ÈlËve ‡ " + intCumul);
+		out.println(" Le cumul s'√©l√®ve √† " + intCumul);
 				
 		
 	}
@@ -513,9 +584,9 @@ public class lancement {
 		
 		Date dateDuJour = new Date(2021, 2, 8);
 		
-		//Etape 2 - DÈcision
+		//Etape 2 - D√©cision
 		
-		//DÈclarer le tarif
+		//D√©clarer le tarif
 		
 		Double dblTarif;
 		
@@ -552,11 +623,11 @@ public class lancement {
 		
 				Scanner scanSaisie = new Scanner(System.in);
 				
-				//Une invite pour le type de vÈhicule
+				//Une invite pour le type de v√©hicule
 				
-				out.println("Saisir la catÈgorie du vÈhicule");
+				out.println("Saisir la cat√©gorie du v√©hicule");
 				
-				//RÈcupÈrer la saisie du type du vÈhicule
+				//R√©cup√©rer la saisie du type du v√©hicule
 				String strCategorie = scanSaisie.nextLine();
 				
 				//Conversion
@@ -568,7 +639,7 @@ public class lancement {
 				{
 				
 					case 1:
-						strMessage="Les dÈbutants sont les bienvenus";
+						strMessage="Les d√©butants sont les bienvenus";
 						break;
 					
 					case  2:
@@ -626,14 +697,14 @@ public class lancement {
 		
 		intB*=4;
 		
-		intC =intB++; //mettre le ++ avant ne donne pas le mÍme rÈsultat que le mettre derriËre
+		intC =intB++; //mettre le ++ avant ne donne pas le m√™me r√©sultat que le mettre derri√®re
 		
 		out.println(intA);
 		out.println(intB);
 		out.println(intC);
 		
 		
-		out.println(intA != intB); //OpÈrateurs de comparaison
+		out.println(intA != intB); //Op√©rateurs de comparaison
 		
 		
 		out.println(intA>0 || intB++>100); //ou
@@ -652,20 +723,20 @@ public class lancement {
 	private static void ExerciceConditions() {
 		
 		/**
-		 * Un utilisateur est invitÈ a saisir son nom et son age
+		 * Un utilisateur est invit√© a saisir son nom et son age
 		 * 
-		 * Ces informations vont permettre de dÈfinir sa cotisation
+		 * Ces informations vont permettre de d√©finir sa cotisation
 		 * 
-		 * Les montants de cotisations son dÈfinis ainsi:
+		 * Les montants de cotisations son d√©finis ainsi:
 		 * 
 		 * Moins de 20ans -- 50
-		 * De 21 ‡ 40 -- 75
-		 * De 41 ‡ 65 -- 90
-		 * Au del‡ de 65 --45
+		 * De 21 √† 40 -- 75
+		 * De 41 √† 65 -- 90
+		 * Au del√† de 65 --45
 		 * 
 		 * 
-		 * Une fois les noms et ‚ge saisis, informer l'utilisateur avec un message tel
-		 * que : Meriem, merci de rÈgler les 75 $ de votre cotisation
+		 * Une fois les noms et √¢ge saisis, informer l'utilisateur avec un message tel
+		 * que : Meriem, merci de r√©gler les 75 $ de votre cotisation
 		 * 
 		 *
 		 */
@@ -677,14 +748,14 @@ public class lancement {
 		out.println("Saisir son nom");
 		String strNom = scanSaisie.nextLine();
 		
-		//Saisir son ‚ge
+		//Saisir son √¢ge
 		
 		
-		out.println("Saisir son ‚ge");
+		out.println("Saisir son √¢ge");
 		String strAge = scanSaisie.nextLine();
 		
 		
-		//Conversion de la chaÓne de l'‚ge
+		//Conversion de la cha√Æne de l'√¢ge
 		Integer intAge= Integer.parseInt(strAge);
 
 		 Double dblCotisation;
@@ -707,7 +778,7 @@ public class lancement {
 		}
 		
 		//Exploitation de la valeur saisie
-				out.println(strNom + " Merci de rÈgler " + dblCotisation);
+				out.println(strNom + " Merci de r√©gler " + dblCotisation);
 				
 		
 	}
@@ -715,7 +786,7 @@ public class lancement {
 	private static void DemoSaisie() {
 		
 		
-		//Pour rÈaliser une saisie, il faut une initialisation de scanner
+		//Pour r√©aliser une saisie, il faut une initialisation de scanner
 		
 		Scanner scanSaisie = new Scanner(System.in);
 		
@@ -723,7 +794,7 @@ public class lancement {
 		
 		out.println("Saisir un nom");
 		
-		//RÈcupÈrer la saisie
+		//R√©cup√©rer la saisie
 		String strNom = scanSaisie.nextLine();
 		
 		//Exploitation de la valeur saisie
@@ -754,7 +825,7 @@ public class lancement {
 		//Prise en compte d'une condition et son contraire
 		
 		if(dateJour.getMonth()==2) {
-			out.println("bientÙt le primtemps");
+			out.println("bient√¥t le primtemps");
 			
 		}else {
 			
@@ -762,7 +833,7 @@ public class lancement {
 		}
 		
 		
-		//Prise en compte de plusieurs cas diffÈrents
+		//Prise en compte de plusieurs cas diff√©rents
 		
 		if(dateJour.getMonth()<3) {
 			out.println("Brrrrr");
@@ -803,7 +874,7 @@ public class lancement {
 	private static void DemoAppelAttributs() {
 		
 		//Sollicitation de la classe Ordinateur et de ses attributs
-		//DÈclaration de variable
+		//D√©claration de variable
 		
 		Ordinateur ordiPC = new Ordinateur();
 		
@@ -817,14 +888,14 @@ public class lancement {
 		Integer intA =25;
 		out.println("valeur avant appel :" + intA);
 		DemoPassageDeValeurs(intA);
-		out.println("valeur aprËs appel :" + intA);
+		out.println("valeur apr√®s appel :" + intA);
 	}
 
 	private static void DemoPassageDeValeurs(Integer valeur) {
 	
-		out.println("valeur reÁue :" + valeur);
+		out.println("valeur re√ßue :" + valeur);
 		valeur+=10;
-		out.println("valeur actualisÈe :" + valeur);
+		out.println("valeur actualis√©e :" + valeur);
 		
 	}
 
@@ -834,8 +905,8 @@ public class lancement {
 		Pret pretConso = new Pret(0.03d, 2, 5000d);
 		Pret pretImmo = new Pret(0.0125d, 15, 100000d);
 		
-		out.println("MensualitÈ : " + pretConso.CalculerMensualite());
-		out.println("MensualitÈ : " + pretImmo.CalculerMensualite());
+		out.println("Mensualit√© : " + pretConso.CalculerMensualite());
+		out.println("Mensualit√© : " + pretImmo.CalculerMensualite());
 		
 	}
 
